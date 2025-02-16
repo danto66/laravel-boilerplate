@@ -9,15 +9,15 @@ use Illuminate\Support\Facades\Pipeline;
 
 class UserService
 {
-    public function getPaginated(QueryParamDto $query)
+    public function getPaginated(QueryParamDto $queryParam)
     {
         $users = Pipeline::send(User::query())
             ->through([
-                new SearchBy(['name', 'email'], $query->search),
+                new SearchBy(['name', 'email'], $queryParam->search),
             ])
             ->thenReturn()
-            ->orderBy($query->sort, $query->order)
-            ->paginate(page: $query->page, perPage: $query->perPage);
+            ->orderBy($queryParam->sort, $queryParam->order)
+            ->paginate(page: $queryParam->page, perPage: $queryParam->perPage);
 
         return $users;
     }

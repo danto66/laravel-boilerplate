@@ -14,11 +14,13 @@ class SearchBy
 
     public function handle(Builder $query, Closure $next)
     {
-        $query->where(function ($query) {
-            foreach ($this->columns as $column) {
-                $query->orWhere($column, 'like', "%{$this->keyword}%");
-            }
-        });
+        if ($this->keyword) {
+            $query->where(function ($query) {
+                foreach ($this->columns as $column) {
+                    $query->orWhere($column, 'like', "%{$this->keyword}%");
+                }
+            });
+        }
 
         return $next($query);
     }
