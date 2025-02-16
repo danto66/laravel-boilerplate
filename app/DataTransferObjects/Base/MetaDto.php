@@ -15,7 +15,7 @@ readonly class MetaDto implements ToArray
         public int $lastPage,
     ) {}
 
-    public static function whenEmpty(): self
+    public static function whenNull(): self
     {
         return new self(
             total: 0,
@@ -28,8 +28,8 @@ readonly class MetaDto implements ToArray
 
     public static function fromPaginator(?LengthAwarePaginator $paginator): self
     {
-        if (empty($paginator) || $paginator->isEmpty()) {
-            return self::whenEmpty();
+        if (!$paginator) {
+            return self::whenNull();
         }
 
         return new self(
