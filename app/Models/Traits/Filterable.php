@@ -24,6 +24,10 @@ trait Filterable
         }
 
         foreach ($filters as $column => $value) {
+            if (!$value || !$column) {
+                continue;
+            }
+
             if (is_array($value)) {
                 $query->whereIn($column, $value);
             } else {
