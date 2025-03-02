@@ -1,0 +1,12 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\DataTransferObjects\Contracts\FromRequest;
+
+readonly class {{ class }}
+{
+    public function __construct(
+
+    ){}
+}
