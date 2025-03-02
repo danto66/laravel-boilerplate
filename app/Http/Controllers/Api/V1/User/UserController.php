@@ -9,7 +9,9 @@ use App\Http\Controllers\Controller;
 use App\DataTransferObjects\Base\MetaDto;
 use App\DataTransferObjects\Base\QueryParamDto;
 use App\DataTransferObjects\User\FilterUserDto;
+use App\DataTransferObjects\User\PatchUserDto;
 use App\DataTransferObjects\User\StoreUserDto;
+use App\Http\Requests\Api\V1\User\PatchUserRequest;
 use App\Http\Requests\Api\V1\User\StoreUserRequest;
 use App\Http\Resources\Api\V1\User\UserResource;
 use App\Http\Resources\Api\V1\User\UsersResource;
@@ -47,5 +49,21 @@ class UserController extends Controller
         return $this->jsonSuccess(
             data: UserResource::make($user),
         );
+    }
+
+    public function patch(PatchUserRequest $request, User $user)
+    {
+        $user = $this->userService->patch($user, PatchUserDto::fromRequest($request));
+
+        return $this->jsonSuccess(
+            data: UserResource::make($user),
+        );
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return $this->jsonSuccess();
     }
 }

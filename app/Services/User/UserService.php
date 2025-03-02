@@ -6,6 +6,7 @@ use App\Models\User;
 use App\DataTransferObjects\User\StoreUserDto;
 use App\DataTransferObjects\Base\QueryParamDto;
 use App\DataTransferObjects\User\FilterUserDto;
+use App\DataTransferObjects\User\PatchUserDto;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserService
@@ -24,5 +25,12 @@ class UserService
     public function create(StoreUserDto $data): User
     {
         return User::create($data->toArray());
+    }
+
+    public function patch(User $user, PatchUserDto $data)
+    {
+        $user->update($data->toArray());
+
+        return $user;
     }
 }
