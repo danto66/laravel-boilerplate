@@ -14,7 +14,7 @@ class SearchBy
 
     public function handle(Builder $query, Closure $next)
     {
-        if (!$this->keyword) {
+        if (!$this->keyword || empty($this->columns)) {
             return $next($query);
         }
 

@@ -3,19 +3,16 @@
 namespace App\Services\User;
 
 use App\DataTransferObjects\Base\QueryParamDto;
-use App\Models\Pipes\SearchBy;
+use App\DataTransferObjects\User\FilterUserDto;
 use App\Models\User;
-use Illuminate\Support\Facades\Pipeline;
 
 class UserService
 {
-    public function getPaginated(QueryParamDto $queryParam)
+    public function getPaginated(QueryParamDto $queryParam, FilterUserDto $filter)
     {
-        $users = Pipeline::send(User::query())
-            ->through([
-                new SearchBy(['name', 'email'], $queryParam->search),
-            ])
-            ->thenReturn()
+        $users = User::query()
+            ->searchBy(['name', 'email'], $queryParam->search)
+            ->filterByArray($filter->toArray())
             ->orderBy($queryParam->sort, $queryParam->order)
             ->paginate(page: $queryParam->page, perPage: $queryParam->perPage);
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\User;
 
 use App\DataTransferObjects\Base\MetaDto;
 use App\DataTransferObjects\Base\QueryParamDto;
+use App\DataTransferObjects\User\FilterUserDto;
 use Illuminate\Http\Request;
 use App\Services\User\UserService;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,10 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = $this->userService->getPaginated(QueryParamDto::fromRequest($request));
+        $users = $this->userService->getPaginated(
+            QueryParamDto::fromRequest($request),
+            FilterUserDto::fromRequest($request),
+        );
 
         return $this->jsonSuccess(
             data: UsersResource::collection($users),
