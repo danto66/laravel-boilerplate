@@ -11,6 +11,7 @@ use App\DataTransferObjects\Base\QueryParamDto;
 use App\DataTransferObjects\User\FilterUserDto;
 use App\DataTransferObjects\User\PatchUserDto;
 use App\DataTransferObjects\User\StoreUserDto;
+use App\Helpers\Http\ResponseJson;
 use App\Http\Requests\Api\V1\User\PatchUserRequest;
 use App\Http\Requests\Api\V1\User\StoreUserRequest;
 use App\Http\Resources\Api\V1\User\UserResource;
@@ -29,7 +30,7 @@ class UserController extends Controller
             FilterUserDto::fromRequest($request),
         );
 
-        return $this->jsonSuccess(
+        return ResponseJson::success(
             data: UsersResource::collection($users),
             meta: MetaDto::fromPaginator($users),
         );
@@ -37,7 +38,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return $this->jsonSuccess(
+        return ResponseJson::success(
             data: UserResource::make($user),
         );
     }
@@ -46,7 +47,7 @@ class UserController extends Controller
     {
         $user = $this->userService->create(StoreUserDto::fromRequest($request));
 
-        return $this->jsonSuccess(
+        return ResponseJson::success(
             data: UserResource::make($user),
         );
     }
@@ -55,7 +56,7 @@ class UserController extends Controller
     {
         $user = $this->userService->patch($user, PatchUserDto::fromRequest($request));
 
-        return $this->jsonSuccess(
+        return ResponseJson::success(
             data: UserResource::make($user),
         );
     }
@@ -64,6 +65,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return $this->jsonSuccess();
+        return ResponseJson::success();
     }
 }
